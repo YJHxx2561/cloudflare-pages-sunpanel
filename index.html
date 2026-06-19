@@ -117,12 +117,13 @@
     </style>
 </head>
 <body class="text-white">
-    <div class="container mx-auto px-4 py-8">
+    <div id="pageContent" class="container mx-auto px-4 py-8 transition-opacity duration-500">
         <header class="mb-8">
             <!-- 时间和日期 - 居中显示 -->
             <div class="text-center mb-6">
                 <div id="currentTime" class="text-4xl font-bold text-white mb-1"></div>
-                <div id="currentDate" class="text-lg text-gray-300"></div>
+                <div id="currentDate" class="text-lg text-gray-300 mb-1"></div>
+                <div id="lunarDate" class="text-lg text-gray-400"></div>
             </div>
             
             <div class="flex items-center justify-between mb-6">
@@ -153,17 +154,17 @@
                             <iconify-icon icon="logos:bing" width="16" height="16"></iconify-icon> Bing
                         </button>
                         <button data-engine="google" class="search-engine-option w-full px-4 py-2 text-left text-gray-300 hover:bg-gray-700 hover:text-white flex items-center gap-2">
-                            <iconify-icon icon="logos:google" width="16" height="16"></iconify-icon> Google
+                            <iconify-icon icon="devicon:google" width="16" height="16"></iconify-icon> Google
                         </button>
                         <button data-engine="baidu" class="search-engine-option w-full px-4 py-2 text-left text-gray-300 hover:bg-gray-700 hover:text-white flex items-center gap-2">
-                            <iconify-icon icon="logos:baidu" width="16" height="16"></iconify-icon> Baidu
+                            <iconify-icon icon="ri:baidu-fill" width="16" height="16"></iconify-icon> Baidu
                         </button>
                     </div>
                 </div>
                 <input type="text" id="searchInput" placeholder="按回车搜索..." 
                        class="search-bar w-full pl-12 pr-12 py-3 rounded-xl text-white placeholder-gray-400 focus:outline-none">
                 <button id="searchBtn" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
-                    <iconify-icon icon="noto:backhand-index-pointing-right" width="20" height="20"></iconify-icon>
+                    <iconify-icon icon="glyphs-poly:arrow-solid" width="20" height="20"></iconify-icon>
                 </button>
             </div>
         </header>
@@ -334,7 +335,7 @@
         </script>
 
         <footer class="mt-12 text-center text-gray-500 text-sm">
-            <p>SunPanel - 网站导航 | Made with ❤️</p>
+            <p>SunPanel - 网站导航 | Made by YJH</p>
         </footer>
 
         <script>
@@ -361,6 +362,7 @@
                 }
                 
                 updateTime();
+                initDate(); // 页面加载时获取一次农历日期
                 setInterval(updateTime, 1000);
                 
                 // 背景切换按钮
@@ -384,7 +386,7 @@
                 var searchEngines = {
                     'bing': { url: 'https://cn.bing.com/search?q=', icon: 'logos:bing' },
                     'google': { url: 'https://www.google.com/search?q=', icon: 'logos:google' },
-                    'baidu': { url: 'https://www.baidu.com/s?wd=', icon: 'ri:baidu-fill' }
+                    'baidu': { url: 'https://www.baidu.com/s?wd=', icon: 'file-text' }
                 };
                 var currentEngine = 'bing';
                 
@@ -476,36 +478,34 @@
                 }
             });
 
-            // 农历日期数据
-            var lunarInfo = {
-                0x04bd8: 19416, 0x04ae0: 19121, 0x0a570: 42353, 0x054d5: 19085, 0x0d260: 19869,
-                0x0d950: 19168, 0x16534: 42352, 0x056a0: 19081, 0x09ad0: 19775, 0x055d2: 19300,
-                0x04ae0: 19105, 0x0a5b6: 19866, 0x0a4d0: 19076, 0x0d250: 19873, 0x0d255: 19870,
-                0x0b540: 18685, 0x0b6a0: 18705, 0x19550: 18821, 0x09550: 18781, 0x149a0: 18760,
-                0x054b0: 18695, 0x0a4a0: 18756, 0x0ea50: 16769, 0x06a50: 18679, 0x05630: 18289,
-                0x0d3a0: 18408, 0x05350: 18028, 0x053e0: 18164, 0x05b50: 18093, 0x06a95: 18028,
-                0x06a00: 18400, 0x0ab60: 18421, 0x09570: 18444, 0x04af5: 18060, 0x04970: 18094,
-                0x0a4b0: 18060, 0x0b4b5: 18720, 0x06a50: 18069, 0x06d40: 18062, 0x0afa0: 18109,
-                0x05b50: 18129, 0x056b0: 18099, 0x04b50: 18119, 0x0a570: 18054, 0x0a4b0: 18069,
-                0x0aa50: 18028, 0x0b5a0: 18789, 0x0d2b0: 18697, 0x0d950: 18677, 0x05550: 18815,
-                0x04b50: 18655, 0x0a5a0: 18700, 0x0a760: 18695, 0x09b60: 18720, 0x09550: 18707,
-                0x04970: 18697, 0x0a4a0: 18781, 0x0b4a0: 18680, 0x0bea0: 18678, 0x0cd70: 18927,
-                0x0afb0: 18703, 0x0ab50: 18781, 0x0b550: 18669, 0x056a0: 18755, 0x05550: 18821,
-                0x0d3a0: 18918, 0x04b50: 18720, 0x0a570: 18756, 0x0a4d0: 18824, 0x0d250: 19785,
-                0x0d550: 18695, 0x04550: 18720, 0x0a5b0: 18756, 0x0a4b0: 18821, 0x0aa50: 18755,
-                0x0b550: 18821, 0x0b2a0: 18786, 0x06a50: 18720, 0x06d40: 18756, 0x0ada0: 18289,
-                0x14b63: 18773, 0x09550: 18786, 0x04950: 18720, 0x04bd0: 18821, 0x0a4b0: 18695,
-                0x0be50: 18669, 0x0c560: 18799, 0x05d50: 18773, 0x0ada0: 18799, 0x15b57: 18918,
-                0x04bd0: 18821, 0x04b00: 18786, 0x0a4b0: 18821, 0x0afb0: 18720, 0x096b0: 18695,
-                0x04ae0: 19105, 0x0a4d0: 18824, 0x0a570: 19105, 0x0a4b0: 18821, 0x0aa50: 18695,
-                0x0b550: 18821, 0x056a0: 18028, 0x05b50: 18093, 0x04b50: 18099, 0x0a570: 18093,
-                0x0a4a0: 18093, 0x0ea50: 18119, 0x06a50: 18129, 0x06d40: 18062, 0x0ada0: 18093,
-                0x04ae0: 18099, 0x0a5b0: 18099, 0x0a4d0: 18028, 0x0d260: 18289, 0x0d950: 18093,
-                0x0d2a0: 18093, 0x0d550: 18028, 0x05550: 18093, 0x0d3a0: 18289, 0x053e0: 18093,
-                0x05b50: 18028, 0x04b50: 18093, 0x0a5a0: 18028, 0x0a760: 18164, 0x0a750: 18289,
-                0x09550: 18093, 0x054b0: 18099, 0x05ad0: 18028, 0x04bd0: 18093, 0x04ae0: 18099,
-                0x0a570: 18289, 0x056d0: 18289, 0x04ea0: 18289, 0x04b50: 18655, 0x0a5b0: 18655
-            };
+            // 农历日期数据 (1900-2100)
+            var lunarInfo = [
+                0x04bd8, 0x04ae0, 0x0a570, 0x054d5, 0x0d260, 0x0d950, 0x16534, 0x056a0, 0x09ad0, 0x055d2,
+                0x04ae0, 0x0a5b6, 0x0a4d0, 0x0d250, 0x0d255, 0x0b540, 0x0b6a0, 0x19550, 0x09550, 0x149a0,
+                0x054b0, 0x0a4a0, 0x0ea50, 0x06a50, 0x05630, 0x0d3a0, 0x05350, 0x053e0, 0x05b50, 0x06a95,
+                0x06a00, 0x0ab60, 0x09570, 0x04af5, 0x04970, 0x0a4b0, 0x0b4b5, 0x06a50, 0x06d40, 0x0afa0,
+                0x05b50, 0x056b0, 0x04b50, 0x0a570, 0x0a4b0, 0x0aa50, 0x0b5a0, 0x0d2b0, 0x0d950, 0x05550,
+                0x04b50, 0x0a5a0, 0x0a760, 0x09b60, 0x09550, 0x04970, 0x0a4a0, 0x0b4a0, 0x0bea0, 0x0cd70,
+                0x0afb0, 0x0ab50, 0x0b550, 0x056a0, 0x05550, 0x0d3a0, 0x04b50, 0x0a570, 0x0a4d0, 0x0d250,
+                0x0d550, 0x04550, 0x0a5b0, 0x0a4b0, 0x0aa50, 0x0b550, 0x0b2a0, 0x06a50, 0x06d40, 0x0ada0,
+                0x14b63, 0x09550, 0x04950, 0x04bd0, 0x0a4b0, 0x0be50, 0x0c560, 0x05d50, 0x0ada0, 0x15b57,
+                0x04bd0, 0x04b00, 0x0a4b0, 0x0afb0, 0x096b0, 0x04ae0, 0x0a4d0, 0x0a570, 0x0a4b0, 0x0aa50,
+                0x0b550, 0x056a0, 0x05b50, 0x04b50, 0x0a570, 0x0a4a0, 0x0ea50, 0x06a50, 0x06d40, 0x0ada0,
+                0x04ae0, 0x0a5b0, 0x0a4d0, 0x0d260, 0x0d950, 0x0d2a0, 0x0d550, 0x05550, 0x0d3a0, 0x053e0,
+                0x05b50, 0x04b50, 0x0a5a0, 0x0a760, 0x0a750, 0x09550, 0x054b0, 0x05ad0, 0x04bd0, 0x04ae0,
+                0x0a570, 0x056d0, 0x04ea0, 0x04b50, 0x0a5b0, 0x0a4d0, 0x0d250, 0x0d550, 0x04550, 0x0a5b0,
+                0x0a4b0, 0x0aa50, 0x0b550, 0x056a0, 0x05b50, 0x04b50, 0x0a570, 0x0a4a0, 0x0ea50, 0x06a50,
+                0x06d40, 0x0ada0, 0x04ae0, 0x0a5b0, 0x0a4d0, 0x0d260, 0x0d950, 0x0d2a0, 0x0d550, 0x05550,
+                0x0d3a0, 0x053e0, 0x05b50, 0x04b50, 0x0a5a0, 0x0a760, 0x0a750, 0x09550, 0x054b0, 0x05ad0,
+                0x04bd0, 0x04ae0, 0x0a570, 0x056d0, 0x04ea0, 0x04b50, 0x0a5b0, 0x0a4d0, 0x0d250, 0x0d550,
+                0x04550, 0x0a5b0, 0x0a4b0, 0x0aa50, 0x0b550, 0x056a0, 0x05b50, 0x04b50, 0x0a570, 0x0a4a0,
+                0x0ea50, 0x06a50, 0x06d40, 0x0ada0, 0x04ae0, 0x0a5b0, 0x0a4d0, 0x0d260, 0x0d950, 0x0d2a0,
+                0x0d550, 0x05550, 0x0d3a0, 0x053e0, 0x05b50, 0x04b50, 0x0a5a0, 0x0a760, 0x0a750, 0x09550,
+                0x054b0, 0x05ad0, 0x04bd0, 0x04ae0, 0x0a570, 0x056d0, 0x04ea0, 0x04b50, 0x0a5b0, 0x0a4d0,
+                0x0d250, 0x0d550, 0x04550, 0x0a5b0, 0x0a4b0, 0x0aa50, 0x0b550, 0x056a0, 0x05b50, 0x04b50,
+                0x0a570, 0x0a4a0, 0x0ea50, 0x06a50, 0x06d40, 0x0ada0, 0x04ae0, 0x0a5b0, 0x0a4d0, 0x0d260,
+                0x0d950, 0x0d2a0, 0x0d550, 0x05550, 0x0d3a0, 0x053e0, 0x05b50, 0x04b50, 0x0a5a0, 0x0a760
+            ];
             
             var lunarMonth = ['正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊'];
             var lunarDay = ['初一', '初二', '初三', '初四', '初五', '初六', '初七', '初八', '初九', '初十', 
@@ -584,6 +584,28 @@
                 return { year: i, month: month, day: offset + 1, isLeap: false };
             }
             
+            // 页面加载时获取一次农历日期和节气
+            function initDate() {
+                var now = new Date();
+                var year = now.getFullYear();
+                var month = (now.getMonth() + 1).toString().padStart(2, '0');
+                var day = now.getDate().toString().padStart(2, '0');
+                var dateStr = year + '年' + month + '月' + day + '日';
+                
+                // 获取星期
+                var weekDays = ['日', '一', '二', '三', '四', '五', '六'];
+                var weekDay = weekDays[now.getDay()];
+                
+                // 显示第二行：年月日及星期（初始不显示节日）
+                var dateEl = document.getElementById('currentDate');
+                if (dateEl) {
+                    dateEl.textContent = dateStr + ' 星期' + weekDay;
+                }
+                
+                // 获取农历日期、节气和节日
+                fetchLunarDate();
+            }
+            
             function updateTime() {
                 var now = new Date();
                 
@@ -595,21 +617,90 @@
                 if (timeEl) {
                     timeEl.textContent = hours + ':' + minutes + ':' + seconds;
                 }
-                
-                // 第二行：年月日 + 农历日期
-                var year = now.getFullYear();
-                var month = (now.getMonth() + 1).toString().padStart(2, '0');
-                var day = now.getDate().toString().padStart(2, '0');
-                var dateStr = year + '年' + month + '月' + day + '日';
-                
-                var lunar = getLunarDate();
-                var lunarStr = '农历' + lunarMonth[lunar.month - 1] + '月' + lunarDay[lunar.day - 1];
-                
-                var dateEl = document.getElementById('currentDate');
-                if (dateEl) {
-                    dateEl.textContent = dateStr + ' ' + lunarStr;
-                }
             }
+            
+            // 从网络获取农历日期、节气和节日
+            function fetchLunarDate() {
+                var dateEl = document.getElementById('currentDate');
+                var lunarEl = document.getElementById('lunarDate');
+                if (!dateEl || !lunarEl) return;
+                
+                // 先显示加载中
+                lunarEl.textContent = '农历信息加载中...';
+                
+                // 使用API获取农历日期、节气和节日
+                fetch('https://cn.apihz.cn/api/time/getday.php?id=88888888&key=88888888')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.code === 200) {
+                            // 更新第二行：添加节日（如果有）
+                            var weekDay = dateEl.textContent;
+                            // 尝试从jieri或YIFESTIVAL获取节日信息
+                            var festivalText = '';
+                            if (data.jieri && data.jieri.trim() !== '') {
+                                festivalText = data.jieri.split('|').join('、');
+                            } else if (data.YIFESTIVAL && data.YIFESTIVAL.trim() !== '') {
+                                festivalText = data.YIFESTIVAL;
+                            }
+                            if (festivalText) {
+                                dateEl.textContent = weekDay + ' · ' + festivalText;
+                            }
+                            
+                            // 第三行：显示农历和节气
+                            var lunarStr = '农历' + data.nyue + data.nri;
+                            var jieqiStr = data.jieqimsg || '';
+                            lunarEl.textContent = lunarStr + ' ' + jieqiStr;
+                        } else {
+                            lunarEl.textContent = '农历信息获取失败';
+                        }
+                    })
+                    .catch(function() {
+                        lunarEl.textContent = '农历信息获取失败';
+                    });
+            }
+            
+            // 自动隐藏页面元素定时器
+            var idleTimer = null;
+            var isHidden = false;
+            var pageContent = document.getElementById('pageContent');
+            
+            function resetIdleTimer() {
+                if (isHidden) {
+                    // 如果已隐藏，恢复显示
+                    pageContent.style.opacity = '1';
+                    isHidden = false;
+                }
+                // 清除现有定时器
+                if (idleTimer) {
+                    clearTimeout(idleTimer);
+                }
+                // 30秒无操作后开始淡出
+                idleTimer = setTimeout(function() {
+                    fadeOutPage();
+                }, 30000);
+            }
+            
+            function fadeOutPage() {
+                var opacity = 1;
+                var interval = setInterval(function() {
+                    opacity -= 0.05;
+                    if (opacity <= 0) {
+                        opacity = 0;
+                        clearInterval(interval);
+                        isHidden = true;
+                    }
+                    pageContent.style.opacity = opacity;
+                }, 100); // 每100ms降低5%，约5秒完成
+            }
+            
+            // 监听用户活动
+            var events = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'click'];
+            events.forEach(function(event) {
+                document.addEventListener(event, resetIdleTimer, { passive: true });
+            });
+            
+            // 初始化定时器
+            resetIdleTimer();
         </script>
     </div>
 </body>
