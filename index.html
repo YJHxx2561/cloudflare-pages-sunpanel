@@ -207,12 +207,10 @@
                     { title: "土木学院", url: "https://civil.swjtu.edu.cn/tzgg.htm", icon: "mdi:construction", desc: "" }
                 ],
                 "工具": [
-                    { title: "R2S", url: "http://192.168.88.3/cgi-bin/luci/admin/quickstart/", icon: "streamline-color:wifi-router-flat", desc: "" },
-                    { title: "ZashBoard", url: "http://192.168.88.3:9090/ui/zashboard/#/proxies", icon: "arcticons:clash-meta", desc: "" },
-                    { title: "AdguardHome", url: "http://192.168.88.3:3000/", icon: "simple-icons:adguard", desc: "" },
-                    { title: "内网测速", url: "http://192.168.88.3:3300/", icon: "simple-icons:speedtest", desc: "" },
+                    { title: "Cudy-TR3000", url: "http://192.168.100.1", icon: "streamline-color:wifi-router-flat", desc: "" },
+                    { title: "ZashBoard", url: "http://192.168.100.1:9090/ui/zashboard/#/proxies", icon: "arcticons:clash-meta", desc: "" },
                     { title: "DNS管理", url: "https://dns.sad.hk.yjhup.com", icon: "gcp:cloud-dns", desc: "" },
-                    { title: "substore", url: "https://substore.hk.yjhup.com/subs?api=https://substore.hk.yjhup.com/substore", icon: "arcticons:clash", desc: "" },
+                    //{ title: "substore", url: "https://substore.hk.yjhup.com/subs?api=https://substore.hk.yjhup.com/substore", icon: "arcticons:clash", desc: "" },
                     { title: "订阅转换前端", url: "https://sub.yjhup.com/", icon: "noto:arrows-counterclockwise", desc: "" },
                     { title: "sunpanel", url: "https://sunpanel.web.yjhup.com/", icon: "noto:sun", desc: "" },
                     { title: "订阅管理系统", url: "https://notice.web.yjhup.com/", icon: "noto:bell", desc: "" },
@@ -236,8 +234,9 @@
                     
                 ],
                 "服务": [
+                    { title: "IP检测", url: "https://oneip.web.yjhup.com", icon: "mdi:ip", desc: "" },
                     { title: "Spaceship", url: "https://spaceship.com", icon: "stash:domain", desc: "" },
-                    { title: "核云", url: "https://www.heyunidc.cn/", icon: "mdi:server", desc: "" },
+                    //{ title: "核云", url: "https://www.heyunidc.cn/", icon: "mdi:server", desc: "" },
                     { title: "云悠", url: "https://yunyoo.cc/", icon: "tabler:server", desc: "" },
                     { title: "风尚云", url: "https://ly.stay33.com/", icon: "mingcute:server-line", desc: "" },
                     { title: "ACCK", url: "https://acck.io/", icon: "boxicons:server-filled", desc: "" },
@@ -362,8 +361,22 @@
         </script>
 
         <footer class="mt-12 text-center text-gray-500 text-sm">
-            <p>SunPanel - 网站导航 | Made by YJH</p>
-        </footer>
+  <div>SunPanel - 网站导航 | Made by <a href="https://yjhup.com" target="_blank">YJH</a></div>
+  <div class="mt-1">
+    <a href="https://icp.gov.moe/?keyword=20262049" target="_blank" class="text-gray-500 hover:text-gray-700 inline-flex items-center gap-1">
+      <img class="icp-icon" src="https://icp.gov.moe/images/gov.svg" alt="" />
+      萌ICP备20262049号
+    </a>
+  </div>
+  <style>
+    .icp-icon {
+      height: 1em;
+      width: auto;
+    }
+  </style>
+</footer>
+
+
 
         <script>
             // 背景图片加载
